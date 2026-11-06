@@ -16,7 +16,6 @@ Progetto realizzato come esercizio del corso Java di start2impact.
 - [Struttura del progetto](#struttura-del-progetto)
 - [Controlli sull'input](#controlli-sullinput)
 - [Note e scelte di progetto](#note-e-scelte-di-progetto)
-- [Autore](#autore)
 
 ---
 
