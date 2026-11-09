@@ -9,9 +9,9 @@ public class Main {
         try {
             g.carica("utenti.csv", "prodotti.csv", "vendite.csv");
             System.out.println("File caricati correttamente.");
-        } catch (Exception e) {
+        } catch (CaricamentoFileException e) {
             System.out.println("Errore nel caricamento dei file: " + e.getMessage());
-            return;
+            System.exit(1);
         }
 
         Scanner in = new Scanner(System.in);

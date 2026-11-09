@@ -14,7 +14,7 @@ public class Gestionale {
     private List<Prodotto> prodotti = new ArrayList<>();
     private List<Vendita> vendite = new ArrayList<>();
 
-    public void carica(String fileUtenti, String fileProdotti, String fileVendite) throws IOException {
+    public void carica(String fileUtenti, String fileProdotti, String fileVendite) throws CaricamentoFileException {
         utenti = CsvLoader.caricaUtenti(fileUtenti);
         prodotti = CsvLoader.caricaProdotti(fileProdotti);
         vendite = CsvLoader.caricaVendite(fileVendite);
