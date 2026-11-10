@@ -10,12 +10,13 @@ Progetto realizzato come esercizio del corso Java di start2impact.
 
 - [Funzionalità](#funzionalità)
 - [Requisiti](#requisiti)
-- [Come eseguire il progetto](#come-eseguire-il-progetto)
+- [Come compilare ed eseguire](#come-compilare-ed-eseguire)
 - [Menu dei comandi](#menu-dei-comandi)
 - [Formato dei file CSV](#formato-dei-file-csv)
 - [Struttura del progetto](#struttura-del-progetto)
-- [Controlli sull'input](#controlli-sullinput)
-- [Note e scelte di progetto](#note-e-scelte-di-progetto)
+- [Gestione degli errori](#gestione-degli-errori)
+- [Scelte di progetto](#scelte-di-progetto)
+- [Autore](#autore)
 
 ---
 
@@ -33,27 +34,64 @@ Progetto realizzato come esercizio del corso Java di start2impact.
 
 ## Requisiti
 
-- **Java 17 o superiore** (JDK per sviluppare, JRE/JDK per eseguire il solo JAR).
-- Per verificare la versione installata: `java -version`
+- **JDK 17 o superiore** per compilare il progetto (serve il comando `javac`).
+- Per eseguire solo il file JAR basta Java 17 o superiore.
+- Per verificare la versione installata:
+
+```bash
+java -version
+javac -version
+```
 
 ---
 
-## Come eseguire il progetto
+## Come compilare ed eseguire
 
-> I tre file CSV devono trovarsi **nella cartella da cui si avvia il programma**, perché vengono cercati con percorso relativo (`utenti.csv`, `prodotti.csv`, `vendite.csv`).
+> **Importante:** i tre file CSV (`utenti.csv`, `prodotti.csv`, `vendite.csv`) devono trovarsi **nella cartella da cui si avvia il programma**, perché vengono cercati con percorso relativo. Nel repository sono già presenti nella cartella principale: avvia i comandi da lì.
 
-### Opzione 1: da IntelliJ IDEA
+### 1. Scaricare il progetto
 
-1. Clona il repository o scarica lo ZIP da GitHub e apri la cartella come progetto in IntelliJ.
-2. Imposta un JDK 17+ in *File > Project Structure > Project*.
-3. Verifica che `utenti.csv`, `prodotti.csv` e `vendite.csv` siano nella cartella principale del progetto (non dentro `src`).
-4. Apri `src/Main.java` e premi il triangolo verde accanto a `main`.
+```bash
+git clone https://github.com/castellaneta98-gif/POF.git
+cd POF
+```
 
-### Opzione 2: dal file JAR
+In alternativa, scarica lo ZIP dalla pagina del repository (pulsante **Code > Download ZIP**), estrailo e apri un terminale nella cartella estratta.
 
-Se il progetto contiene un JAR (ad esempio nella sezione *Releases* del repository):
+### 2. Compilare
 
-1. Metti `../../Downloads/POF.jar` e i tre file CSV nella stessa cartella.
+Dalla cartella principale del progetto (quella che contiene `src` e i file CSV):
+
+```bash
+javac -d out -sourcepath src src/app/Main.java
+```
+
+Il comando compila `Main` e tutte le classi di cui ha bisogno e crea i file compilati nella cartella `out`. Funziona allo stesso modo su Windows (PowerShell o Prompt dei comandi), macOS e Linux.
+
+### 3. Eseguire
+
+Sempre dalla cartella principale del progetto:
+
+```bash
+java -cp out app.Main
+```
+
+Deve comparire il messaggio `File caricati correttamente.` seguito dal menu.
+
+### Alternativa: esecuzione da IntelliJ IDEA
+
+1. Apri la cartella del progetto con *File > Open*.
+2. Imposta un JDK 17 o superiore in *File > Project Structure > Project*.
+3. Verifica che `src` sia contrassegnata come *Sources Root* (cartella blu).
+4. Apri `src/app/Main.java` e premi il triangolo verde accanto al metodo `main`.
+
+I file CSV devono stare nella cartella principale del progetto (non dentro `src`).
+
+### Alternativa: esecuzione dal file JAR
+
+Il file `POF.jar` è fornito nel pacchetto di consegna (non è incluso nel repository). Per usarlo:
+
+1. Metti `POF.jar` e i tre file CSV nella **stessa cartella**.
 2. Apri un terminale in quella cartella.
 3. Avvia:
 
@@ -61,14 +99,7 @@ Se il progetto contiene un JAR (ad esempio nella sezione *Releases* del reposito
 java -jar POF.jar
 ```
 
-### Opzione 3: da terminale, compilando i sorgenti
-
-Dalla cartella principale del progetto:
-
-```bash
-javac -d out src/*.java
-java -cp out Main
-```
+> Il JAR va lanciato dal terminale e non con un doppio clic: essendo un programma da riga di comando, la finestra si chiuderebbe subito.
 
 ---
 
@@ -100,15 +131,15 @@ Dopo ogni operazione il menu viene mostrato di nuovo, fino all'inserimento di `0
 
 ### 1 - Visualizza tutti i prodotti
 
-Stampa per ogni prodotto: ID, data di inserimento, nome, marca, prezzo e disponibilità (esempio di output):
+Stampa per ogni prodotto: ID, data di inserimento, nome, marca, prezzo e disponibilità. Esempio di output con i dati forniti:
 
 ```
-ID  | Inserimento | Nome            | Marca      |    Prezzo | Disponibile
-1   | 22/07/2021 | Latte di mandorla | Bjorg      |    2,15 € | SI
-2   | 01/06/2021 | Lenticchie      | Probios    |   11,41 € | SI
-3   | 02/03/2021 | Ceci            | Valfrutta  |    1,69 € | NO
-4   | 31/12/2020 | Farina di cocco | Bioasia    |    9,99 € | SI
-5   | 23/04/2021 | Piselli         | Findus     |    4,39 € | NO
+ID  | Data ins.  | Nome                 | Marca        |     Prezzo | Disponibile
+1   | 22/07/2021 | Latte di mandorla    | Bjorg        |     2,15 € | SI
+2   | 01/06/2021 | Lenticchie           | Probios      |    11,41 € | SI
+3   | 02/03/2021 | Ceci                 | Valfrutta    |     1,69 € | NO
+4   | 31/12/2020 | Farina di cocco      | Bioasia      |     9,99 € | SI
+5   | 23/04/2021 | Piselli              | Findus       |     4,39 € | NO
 ```
 
 ### 2 - Compra un prodotto
@@ -118,6 +149,15 @@ Chiede l'ID del prodotto e l'ID dell'utente. Se i dati sono validi:
 - viene creata una nuova vendita con ID pari al massimo ID esistente + 1;
 - il campo *Disponibile* del prodotto passa da `SI` a `NO`;
 - il programma mostra l'ID della vendita creata.
+
+Esempio:
+
+```
+Scelta: 2
+ID prodotto: 1
+ID utente: 2
+Acquisto completato. ID vendita: 3
+```
 
 ### 3 - Restituisci un prodotto
 
@@ -129,12 +169,13 @@ Chiede in sequenza ID, nome, cognome, data di nascita (formato `gg/mm/aaaa`), in
 
 ### 5 - Esporta i prodotti disponibili
 
-Crea nella cartella da cui è avviato il programma un file `prodotti_gg_mm_aaaa.csv`, ad esempio `prodotti_04_11_2026.csv`, contenente solo i prodotti con disponibilità `SI`:
+Crea nella cartella da cui è avviato il programma un file `prodotti_gg_mm_aaaa.csv`, ad esempio `prodotti_09_11_2026.csv`, contenente solo i prodotti con disponibilità `SI`:
 
 ```
 ID;Data inserimento;Nome;Marca;Prezzo
 1;22/07/2021;Latte di mandorla;Bjorg;2,15 €
 2;01/06/2021;Lenticchie;Probios;11,41 €
+4;31/12/2020;Farina di cocco;Bioasia;9,99 €
 ```
 
 ---
@@ -178,12 +219,20 @@ Collegamenti tra i file:
 ```
 .
 ├── src/
-│   ├── Main.java          # menu, lettura e controllo dell'input
-│   ├── Gestionale.java    # dati in memoria e logica dei comandi
-│   ├── CsvLoader.java     # lettura dei CSV e conversione in oggetti
-│   ├── Utente.java        # classe corrispondente a utenti.csv
-│   ├── Prodotto.java      # classe corrispondente a prodotti.csv
-│   └── Vendita.java       # classe corrispondente a vendite.csv
+│   ├── app/
+│   │   └── Main.java                          # menu, lettura e controllo dell'input
+│   ├── service/
+│   │   └── Gestionale.java                    # dati in memoria e logica dei comandi
+│   ├── model/
+│   │   ├── Utente.java                        # classe corrispondente a utenti.csv
+│   │   ├── Prodotto.java                      # classe corrispondente a prodotti.csv
+│   │   └── Vendita.java                       # classe corrispondente a vendite.csv
+│   ├── io/
+│   │   ├── CsvLoader.java                     # lettura dei CSV e conversione in oggetti
+│   │   └── CsvExporter.java                   # scrittura del CSV dei prodotti disponibili
+│   └── exception/
+│       ├── CaricamentoFileException.java      # errori di lettura/validazione dei CSV
+│       └── OperazioneNonValidaException.java  # errori delle operazioni richieste dall'utente
 ├── utenti.csv
 ├── prodotti.csv
 ├── vendite.csv
@@ -191,33 +240,57 @@ Collegamenti tra i file:
 └── README.md
 ```
 
-| Classe | Responsabilità |
+| Package | Responsabilità |
 |---|---|
-| `Main` | Mostra il menu, legge i comandi da tastiera e ripete la richiesta se l'input non è valido |
-| `Gestionale` | Contiene le liste di utenti, prodotti e vendite e implementa acquisto, restituzione, aggiunta utente ed esportazione |
-| `CsvLoader` | Legge i file, salta intestazione e righe vuote, converte date e prezzi |
-| `Utente`, `Prodotto`, `Vendita` | Classi modello con campi privati, costruttore, getter e `toString` |
+| `app` | Interfaccia da riga di comando: mostra il menu, legge l'input da tastiera e lo valida. Non contiene logica di business |
+| `service` | `Gestionale` mantiene i dati in memoria e implementa acquisto, restituzione, aggiunta utente e consultazione |
+| `model` | Classi del dominio (`Utente`, `Prodotto`, `Vendita`): campi privati, costruttore, getter e `toString` |
+| `io` | Lettura dei file CSV (`CsvLoader`) e scrittura del file esportato (`CsvExporter`) |
+| `exception` | Eccezioni personalizzate |
 
 ---
 
-## Controlli sull'input
+## Gestione degli errori
+
+### Input dell'utente
 
 - I campi numerici vengono richiesti di nuovo finché non viene inserito un numero intero valido.
 - **Acquisto:** il prodotto e l'utente devono esistere e il prodotto deve essere disponibile.
 - **Restituzione:** la vendita deve esistere.
 - **Nuovo utente:** l'ID non deve essere già in uso; nome, cognome, indirizzo e documento non possono essere vuoti né contenere il carattere `;` (romperebbe il formato CSV); la data deve essere valida e non nel futuro.
-- Le righe vuote nei CSV (anche quelle composte solo da `;`) vengono ignorate in fase di caricamento.
 - In caso di errore viene mostrato un messaggio e il programma torna al menu.
+
+### Caricamento dei file
+
+Se un file non può essere caricato, il programma mostra un messaggio che indica il file e, quando possibile, la riga con il problema, e termina con codice di errore 1. Casi gestiti:
+
+- file mancante (il messaggio indica anche la cartella da cui è stato avviato il programma);
+- numero di colonne errato;
+- valore numerico non valido o mancante;
+- data non valida;
+- campo `Disponibile` diverso da `SI` o `NO`;
+- ID duplicato nello stesso file;
+- vendita che fa riferimento a un prodotto o a un utente inesistente.
+
+Le righe vuote nei CSV (anche quelle composte solo da `;`, tipiche dei file salvati da Excel) vengono ignorate.
 
 ---
 
-## Note e scelte di progetto
+## Scelte di progetto
 
+- **Strutture dati:** utenti, prodotti e vendite sono memorizzati in `Map<Integer, ...>` con l'ID come chiave (`LinkedHashMap`, per mantenere l'ordine di inserimento del file). Questo rende immediata la ricerca per ID e permette di individuare subito gli ID duplicati.
+- **Separazione delle responsabilità:** l'interfaccia (`app`), la logica (`service`), i dati (`model`) e l'accesso ai file (`io`) sono in package separati.
 - **Persistenza:** le modifiche (acquisti, restituzioni, nuovi utenti) restano **solo in memoria** e vengono perse alla chiusura. I CSV originali non vengono mai modificati. L'unico file scritto dal programma è quello creato dal comando 5.
 - **Date:** vengono lette con il formato `d/M/yyyy` (quindi anche `23/4/2021`) e mostrate come `gg/mm/aaaa`.
 - **Prezzi:** nei file compaiono come `2,15 €`; nel programma sono memorizzati come numeri decimali e mostrati con due cifre decimali e il simbolo `€`.
 - **ID vendita:** assegnato automaticamente come massimo ID esistente + 1.
 - **ID utente:** inserito manualmente dall'utente e controllato per evitare duplicati.
+
+---
+
+## Autore
+
+Giuseppe Castellaneta - [github.com/castellaneta98-gif](https://github.com/castellaneta98-gif)
 
 
 
